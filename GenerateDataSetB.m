@@ -19,7 +19,7 @@ while dataIndex <= 2*N
     x = sample;
     if visited(sample) == 0
         visited(sample) = 1;
-        if Labels(x) == 7 && sevens < N
+        if Labels(x) == 0 && sevens < N
             %extract the data of the ima dge
             d = squeeze(TrainImages(x,:,:));
             %flatten the data vector

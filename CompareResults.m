@@ -5,11 +5,14 @@ map = [7,1];
 correct = 0;
 
 for idx = 1:numel(actual)
-    act = actual(idx)
+    idx
+    act = actual(idx);
     pred = test(idx);
     predM = map(pred);
     if(act == predM)
         correct =  correct +1;
+    else
+        'wrong';
     end
    
 end

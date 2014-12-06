@@ -1,0 +1,10 @@
+%[X,Y] = GenerateDataSetB(100);
+X = testData;
+Y = [1,1,1,2,2,2,2];
+opts = {};
+opts.kEigenVecs = 2;
+opts.Normalization = 'markov';
+opts.kNN = 3;
+G = GraphDiffusion(X, 0, opts);
+pred = kmeans(G.EigenVecs, opts.kEigenVecs);
+CompareResults(Y,pred);
