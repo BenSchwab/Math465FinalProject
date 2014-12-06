@@ -1,4 +1,4 @@
-function [ output_args ] = ConstructUnormalizedLaplacian(X, userOpts)
+function [ output_args ] = SpectralCluster(X, userOpts)
 %CONSTRUCTUNORMALIZEDLAPLACIAN Construct an unormalized Laplacian for the 
 %data
 
