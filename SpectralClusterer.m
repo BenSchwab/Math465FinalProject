@@ -1,4 +1,4 @@
-function [ output_args ] = SpectralCluster(X, userOpts)
+function [ G ] = SpectralClusterer(X, userOpts)
 %CONSTRUCTUNORMALIZEDLAPLACIAN Construct an unormalized Laplacian for the 
 %data
 
@@ -50,14 +50,14 @@ normalized = D^(-1/2)*L*D^(-1/2);
 U = EigenVec(:,1:Opts.NumClusters);
 labels = kmeans(U, Opts.NumClusters);
 
-output_args.W = W;
-output_args.D = D;
-output_args.L = L;
-output_args.U = U;
-output_args.labels = labels;
-output_args.LNormalized = normalized;
-output_args.EigenVec = EigenVec;
-output_args.EigenVal = EigenVal;
+G.W = W;
+G.D = D;
+G.L = L;
+G.U = U;
+G.labels = labels;
+G.LNormalized = normalized;
+G.EigenVec = EigenVec;
+G.EigenVal = EigenVal;
 
 
 
