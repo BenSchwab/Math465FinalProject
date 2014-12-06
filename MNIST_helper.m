@@ -6,5 +6,6 @@
 %       X: numPerPoint*numbeOfPoints by 28^2 vector of image data
 %       Y: numPerPoint*numbeOfPoints by 1 vector of labels
 function [X,Y] = MNIST_helper(queryDigits, numPerPoint)
-    [X,Y]=Generate_MNIST(numPerPoint, struct('Sampling', 'RandN', 'QueryDigits', queryDigits, 'ReturnForm', 'vector'));
+    [X_temp,Y]=Generate_MNIST(numPerPoint, struct('Sampling', 'RandN', 'QueryDigits', queryDigits, 'ReturnForm', 'vector'));
+    X = X_temp';
 end
