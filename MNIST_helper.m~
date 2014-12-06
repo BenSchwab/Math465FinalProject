@@ -1,4 +1,0 @@
-function [X,Y] = MNIST_helper(queryDigits, numPerPoint)
-
-[X,Y]=Generate_MNIST(numPerPoint, struct('Sampling', 'RandN', 'QueryDigits', queryDigits, 'ReturnForm', 'vector'));
-end
