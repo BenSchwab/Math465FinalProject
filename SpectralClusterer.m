@@ -12,7 +12,7 @@ if nargin>1
     fn = fieldnames(userOpts);
     for j=1:length(fn)
         name = fn{j};
-        value = getfield(Options, name);
+        value = getfield(userOpts, name);
 
         if     strcmpi(name,'NumberNeighbors')   Opts.NumberNeighbors = value;
         elseif strcmpi(name,'NumClusters')       Opts.NumClusters = value;
