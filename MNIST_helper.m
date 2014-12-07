@@ -12,8 +12,5 @@ function [X,Y] = MNIST_helper(queryDigits, numPerPoint, noiseLevel)
         noiseLevel = 0;
     end
     Opts = struct('NumberOfPoints',numPerPoint,'MnistOpts',MNISTOpts,'NoiseType','Gaussian','NoiseLocation','entire','NoiseParam',noiseLevel);
-    [X_temp,~,~,Y] = GenerateDataSets('BMark_MNIST', Opts);
-    X = X_temp';
+    [X,~,~,Y] = GenerateDataSets('BMark_MNIST', Opts);
 end
-    
-    
