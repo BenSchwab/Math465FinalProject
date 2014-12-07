@@ -12,11 +12,11 @@ strandTwoYCoordinates = -sin(t);
 strandTwoZCoordinates = t;
 strandTwoLabels = ones(1,n);
 
-mu = 0;
-sigma = 0.4;
+strandMu = 0;
+strandSigma = 0.4;
 zCoordinates = horzcat(strandOneZCoordinates, strandTwoZCoordinates);
-xCoordinates = horzcat(strandOneXCoordinates, strandTwoXCoordinates) + normrnd(mu,sigma,1,n*2);
-yCoordinates = horzcat(strandOneYCoordinates, strandTwoYCoordinates) + normrnd(mu,sigma,1,n*2);
+xCoordinates = horzcat(strandOneXCoordinates, strandTwoXCoordinates) + normrnd(strandMu,strandSigma,1,n*2);
+yCoordinates = horzcat(strandOneYCoordinates, strandTwoYCoordinates) + normrnd(strandMu,strandSigma,1,n*2);
 
 X = vertcat(xCoordinates, yCoordinates, zCoordinates);
 Y = horzcat(strandOneLabels, strandTwoLabels);
