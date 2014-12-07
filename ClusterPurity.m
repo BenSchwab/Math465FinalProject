@@ -1,7 +1,7 @@
 function [ purity ] = ClusterPurity(clusters, trueLabels, numClusters)
 %CLUSTERPURITY Summary of this function goes here
 %   Detailed explanation goes here
-purity = zeros(numClusters,1);
+purity = zeros(numClusters,2);
 
 clusterKeys = unique(trueLabels);
 for cluster = 1:numClusters
@@ -17,8 +17,20 @@ for cluster = 1:numClusters
         end
    end
    vals = cell2mat(values(clusterMap));
+   key_arr = cell2mat(keys(clusterMap));
    
-   purity(cluster) = max(vals)/sum(vals);
+   maxVal = 0;
+   maxKey = -1;
+   for i = 1:length(vals)
+    key = key_arr(i);
+    val = vals(i);
+    if val >= maxVal
+        maxVal = val;
+        maxKey = key;
+    end
+   end
+   purity(cluster, 1) = maxVal/sum(vals);
+   purity(cluster, 2) = maxKey;
 end
 
 
