@@ -3,13 +3,46 @@ function [ Clusters, G] = SpectralClusterer(X,Y,Opts)
 %Opts is an array of optional options as follows:
 %
 %
+
+auto = 0;
+if isfield(Opts, 'auto')
+    auto = getfield(Opts, 'auto');
+end
+if auto
+    G = AutoTuneLaplacianBuilder(X,Opts);
+else
+    G = LaplacianBuilder(X,Opts);
+end
 Clusters = {};
 
-G = LaplacianBuilder(X,Opts);
+laplacianType = 'unnormalized';
+if isfield(Opts, 'LaplacianType')
+    laplacianType = getfield(Opts, 'LaplacianType');
+end
+
+
 
 %Preform the spectral projection
-[EigenVec,EigenVal] = eig(G.L); 
-U = EigenVec(:,1:Opts.NumClusters);
+if strcmp(laplacianType,'shi-normalized')
+     [EigenVec,EigenVal] = eig(G.LRW); 
+     U = EigenVec(:,1:Opts.NumClusters);
+     
+elseif strcmp(laplacianType,'ng-normalized')
+     [EigenVec,EigenVal] = eig(G.LNormalized); 
+     T = EigenVec(:,1:Opts.NumClusters);
+     for row = 1:length(T(:,1))
+        T(row,:) = T(row,:)/norm(T(row,:));
+     end
+     U = T;
+else 
+    [EigenVec,EigenVal] = eig(G.L); 
+     U = EigenVec(:,1:Opts.NumClusters);
+end
+
+
+
+
+
 
 %Compute the clusters on the projection with K-means
 clusters = kmeans(U, Opts.NumClusters);
@@ -61,8 +94,6 @@ clusterSet = cell(0);
 Clusters.Merged = newClusters;
 Clusters.Unmerged = clusters;
 %Clusters.ClusterSets = clusterSet
-
-
 
 end
 
