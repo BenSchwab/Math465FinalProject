@@ -44,7 +44,7 @@ end
 L = D - W;
 
 
-normalized = D^(-1/2)*L*D^(-1/2);
+LNormalized = D^(-1/2)*L*D^(-1/2);
 [EigenVec,EigenVal] = eig(L); 
 
 U = EigenVec(:,1:Opts.NumClusters);
@@ -55,7 +55,7 @@ G.D = D;
 G.L = L;
 G.U = U;
 G.labels = labels;
-G.LNormalized = normalized;
+G.LNormalized = LNormalized;
 G.EigenVec = EigenVec;
 G.EigenVal = EigenVal;
 
