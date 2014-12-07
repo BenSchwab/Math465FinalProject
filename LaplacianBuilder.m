@@ -7,6 +7,9 @@ Opts = {};
 Opts.NumberNeighbors = 5;
 Opts.NumClusters = 2;
 
+%By default do not combine the clusters
+Opts.CombineClusters = 0;
+
 %Populate User options
 if nargin>1
     fn = fieldnames(UserOpts);
