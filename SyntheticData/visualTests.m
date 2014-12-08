@@ -18,3 +18,8 @@ scatter3(X(1,:), X(2,:), X(3,:), 4, Y);
 colormap(cool)
 [X, Y] = lineAndBlob(1000, 1000);
 scatter(X(1,:), X(2,:), 4, Y);
+
+%% visual test for denseAndSparseBlobs
+colormap(cool)
+[X, Y] = lineAndBlob(1000, 3);
+scatter(X(1,:), X(2,:), X(3, :));
