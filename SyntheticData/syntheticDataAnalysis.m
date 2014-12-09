@@ -39,11 +39,13 @@ Opts.interval = 2; % 2 seconds between plot displays
 switch pExampleIdx
     case 1  
         Opts.name = 'twoBalls';
-        [X, Y] = twoBalls(1000,2,3);
+        twoBallOpts = struct();
+        [X, Y] = twoBalls(1000,2,3,twoBallOpts);
         syntheticDataAnalyzer(X, Y, Opts);
     case 2
         Opts.name = 'doubleHelix';
-        [X, Y] = doubleHelix(1000);
+        doubleHelixOpts = struct();
+        [X, Y] = doubleHelix(1000, doubleHelixOpts);
         syntheticDataAnalyzer(X, Y, Opts);
     case 3
         Opts.name = 'lineAndBlob';
@@ -55,7 +57,8 @@ switch pExampleIdx
         syntheticDataAnalyzer(X, Y, Opts);
     case 5
         Opts.name = 'blobInSphere';
-        [X, Y] = blobInSphere(1000, 1000, 2);
+        blobInSphereOpts = struct();
+        [X, Y] = blobInSphere(1000, 1000, 2, blobInSphereOpts);
         syntheticDataAnalyzer(X, Y, Opts);
     case 6
         Opts.name = 'twoBalls';
