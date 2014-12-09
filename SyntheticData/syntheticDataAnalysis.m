@@ -1,8 +1,10 @@
 
 pExampleNames   = { ...
-    'twoBalls', ...
-    'doubleHelix', ...
-    'lineAndBlob' };
+    'twoBalls       Kmeans[O] Spectral[O]', ...
+    'doubleHelix    Kmeans[X] Spectral[O]', ...
+    'lineAndBlob    Kmeans[X] Spectral[X]', ...
+    'denseSparse    Kmeans[X] Spectral[X]', ...
+    'blobInSphere   Kmeans[X] Spectral[O]'};
 
 fprintf('\n\n Select example to run:\n');
 for k = 1:length(pExampleNames),
@@ -24,20 +26,24 @@ while true,
     end;
 end;
 
+% default settings
+Opts.numberOfClusters = 2;
+Opts.numberOfNeighbors = 70;
+
 switch pExampleIdx
     case 1  
         [X, Y] = twoBalls(1000,2,3);
-        Opts.numberOfClusters = 2;
-        Opts.numberOfNeighbors = 70;
         syntheticDataAnalyzer(X, Y, Opts);
     case 2
         [X, Y] = doubleHelix(1000);
-        Opts.numberOfClusters = 2;
-        Opts.numberOfNeighbors = 70;
         syntheticDataAnalyzer(X, Y, Opts);
     case 3
         [X, Y] = lineAndBlob(1000, 1000);
-        Opts.numberOfClusters = 2;
-        Opts.numberOfNeighbors = 70;
+        syntheticDataAnalyzer(X, Y, Opts);
+    case 4
+        [X, Y] = denseAndSparseBlobs(1000, 3);
+        syntheticDataAnalyzer(X, Y, Opts);
+    case 5
+        [X, Y] = blobInSphere(1000, 1000, 2);
         syntheticDataAnalyzer(X, Y, Opts);
 end
