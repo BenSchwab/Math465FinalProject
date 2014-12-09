@@ -1,8 +1,10 @@
-function [ X, Y ] = blobInSphere(nBlob, nSphere, d)
+function [ X, Y ] = blobInSphere(nBlob, nSphere, d, Opts)
 
 blobMu = 0;
-blobSigma = 0.5;
-blob = normrnd(blobMu,blobSigma,d,nBlob);
+if ~isfield(Opts,'blobSigma')
+    Opts.blobSigma = 0.5;
+end
+blob = normrnd(blobMu,Opts.blobSigma,d,nBlob);
 blobLabels = zeros(1,nBlob);
 
 sphere = normrnd(0,1,d,nSphere);
@@ -13,8 +15,10 @@ for i=1:nSphere
     sphere(:,i) = sphereRadius*sphere(:,i)/lengths(i);
 end
 sphereMu = 0;
-sphereSigma = 0.02;
-sphere = sphere + normrnd(sphereMu,sphereSigma,d,nSphere);
+if ~isfield(Opts,'sphereSigma')
+    Opts.sphereSigma = 0.02;
+end
+sphere = sphere + normrnd(sphereMu,Opts.sphereSigma,d,nSphere);
 sphereLabels = ones(1,nSphere);
 
 Y = horzcat(blobLabels, sphereLabels);

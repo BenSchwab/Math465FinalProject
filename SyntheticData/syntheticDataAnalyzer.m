@@ -1,8 +1,6 @@
 function [] = syntheticDataAnalyzer( X, Y, Opts)
 
-    
-
-    %% plot the data (if possible)
+    %% plot the raw data in monocolor (if possible)
     if(Opts.savePlots)
         fh = figure('Visible','off');
     else
@@ -25,7 +23,7 @@ function [] = syntheticDataAnalyzer( X, Y, Opts)
         pause(Opts.interval);
     end
 
-    %% plot the K-Means Clustering results
+    %% plot assignments for any clustering algorithm
     
     function plotAssignments(X, labelAssignments, plotName)
         
@@ -63,14 +61,16 @@ function [] = syntheticDataAnalyzer( X, Y, Opts)
         end
    
     end
+    
+    %% plot the K-Means Clustering results
 
     kMeansLabelAssignments = kmeans(X', Opts.numberOfClusters);
     plotAssignments(X, kMeansLabelAssignments, 'kmeans');
 
     %% plot the Spectral Clustering results
     
-    [scLabelAssignments, ~] = SpectralClusterer(X, Y, struct('NumClusters', Opts.numberOfClusters, 'NumberNeighbors', Opts.numberOfNeighbors));
-    plotAssignments(X, scLabelAssignments.Merged, 'spectral');
+    [spectralLabelAssignments, ~] = SpectralClusterer(X, Y, struct('NumClusters', Opts.numberOfClusters, 'NumberNeighbors', Opts.numberOfNeighbors));
+    plotAssignments(X, spectralLabelAssignments.Merged, 'spectral');
 
     close all;
 end

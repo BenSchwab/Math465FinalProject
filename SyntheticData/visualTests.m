@@ -1,3 +1,4 @@
+%% Visual Tests for Synthetic Data Examples
 
 %% visual test for blobInSphere
 colormap(cool)
