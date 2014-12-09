@@ -5,8 +5,8 @@ pExampleNames   = { ...
     'lineAndBlob    Kmeans[X] Spectral[X]', ...
     'denseSparse    Kmeans[X] Spectral[X]', ...
     'blobInSphere   Kmeans[X] Spectral[O]', ...
+    'twoBalls       Varying Dimension', ...
     'blobInSphere   Varying Variance', ...
-    'blobInSphere   Varying Dimension', ...
     'doubleHelix    Varying Variance'};
 
 fprintf('\n\n Select example to run:\n');
@@ -58,10 +58,22 @@ switch pExampleIdx
         [X, Y] = blobInSphere(1000, 1000, 2);
         syntheticDataAnalyzer(X, Y, Opts);
     case 6
-        Opts.savePlots = false;
-        Opts.name = 'blobInSphere_varyDimension';
-        % TODO increase variance
-        [X, Y] = blobInSphere(1000, 1000, 2);
+        Opts.name = 'twoBalls';
+        
+        dimensions = 2.^(1:10);
+        averagePurities = zeros(1,length(dimensions));
+        
+        for i=1:length(dimensions)
+            dimension = dimensions(i);
+            [X, Y] = twoBalls(1000,dimension,dimension); % embedded dim = dim
+            [spectralLabelAssignments, ~] = SpectralClusterer(X, Y, struct('NumClusters', Opts.numberOfClusters, 'NumberNeighbors', Opts.numberOfNeighbors));
+            purityMatrix = ClusterPurity(spectralLabelAssignments.Unmerged, Y, Opts.numberOfClusters);
+            averagePurity = mean(purityMatrix(:,1));
+            averagePurities(1,i) = averagePurity; 
+        end
+        
+        plot(dimensions, averagePurities);
+            
     case 7
         Opts.name = 'blobInSphere_varyVariance';
         
