@@ -62,13 +62,13 @@ switch pExampleIdx
         syntheticDataAnalyzer(X, Y, Opts);
     case 6
         Opts.name = 'twoBalls';
-        
+        twoBallsOpts = struct('centerDistance',1.9); % TODO: looking to see if we can break spectral in high d, as points go to the spherical boundary
         dimensions = 2.^(1:10);
         averagePurities = zeros(1,length(dimensions));
         
         for i=1:length(dimensions)
             dimension = dimensions(i);
-            [X, Y] = twoBalls(1000,dimension,dimension); % embedded dim = dim
+            [X, Y] = twoBalls(1000,dimension,dimension,twoBallsOpts); % embedded dim = dim
             [spectralLabelAssignments, ~] = SpectralClusterer(X, Y, struct('NumClusters', Opts.numberOfClusters, 'NumberNeighbors', Opts.numberOfNeighbors));
             purityMatrix = ClusterPurity(spectralLabelAssignments.Unmerged, Y, Opts.numberOfClusters);
             averagePurity = mean(purityMatrix(:,1));
