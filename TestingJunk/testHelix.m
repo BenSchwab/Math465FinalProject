@@ -1,6 +1,6 @@
 nc = 2;
-[X, Y] = blobInSphere(1000, 1000, 2);
-scatter(X(1,:), X(2,:))
+[X, Y] = doubleHelix(1000);
+scatter3(X(1,:), X(2,:),  X(3,:))
 pause
 [clusters, G] = SpectralClusterer(X, Y, struct('NumClusters', nc, 'NumberNeighbors', 70));
 vals = unique(clusters.Unmerged);
@@ -19,4 +19,4 @@ for i = 1:n
     color = colors(colorMap(clusters.Unmerged(i)),:);
     colorMatrix(i,:) = color;
 end
-scatter(X(1,:), X(2,:),4, colorMatrix)
+scatter3(X(1,:), X(2,:), X(3,:), 4, colorMatrix)

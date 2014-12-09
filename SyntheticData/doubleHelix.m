@@ -13,7 +13,7 @@ strandTwoZCoordinates = t;
 strandTwoLabels = ones(1,n);
 
 strandMu = 0;
-strandSigma = 0.4;
+strandSigma = 0.1;
 zCoordinates = horzcat(strandOneZCoordinates, strandTwoZCoordinates);
 xCoordinates = horzcat(strandOneXCoordinates, strandTwoXCoordinates) + normrnd(strandMu,strandSigma,1,n*2);
 yCoordinates = horzcat(strandOneYCoordinates, strandTwoYCoordinates) + normrnd(strandMu,strandSigma,1,n*2);

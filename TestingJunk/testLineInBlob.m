@@ -1,5 +1,5 @@
 nc = 2;
-[X, Y] = blobInSphere(1000, 1000, 2);
+[X, Y] = lineAndBlob(1000, 1000);
 scatter(X(1,:), X(2,:))
 pause
 [clusters, G] = SpectralClusterer(X, Y, struct('NumClusters', nc, 'NumberNeighbors', 70));
