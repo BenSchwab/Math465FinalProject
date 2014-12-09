@@ -21,5 +21,5 @@ scatter(X(1,:), X(2,:), 4, Y);
 
 %% visual test for denseAndSparseBlobs
 colormap(cool)
-[X, Y] = lineAndBlob(1000, 3);
-scatter(X(1,:), X(2,:), X(3, :));
+[X, Y] = denseAndSparseBlobs(1000, 3);
+scatter3(X(1,:), X(2,:), X(3, :));

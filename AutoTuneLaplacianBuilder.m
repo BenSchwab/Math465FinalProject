@@ -1,4 +1,4 @@
-function [ G ] = LaplacianBuilder( X, UserOpts)
+function [ G ] = AutoTuneLaplacianBuilder( X, UserOpts)
 %LAPLACIANBUILDER This function builds the Laplacian graph for the input
 %DxN matrix.
 
