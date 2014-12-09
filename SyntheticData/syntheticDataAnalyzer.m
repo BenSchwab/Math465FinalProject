@@ -1,6 +1,13 @@
 function [] = syntheticDataAnalyzer( X, Y, Opts)
 
-    %% plot the data if possible
+    
+
+    %% plot the data (if possible)
+    if(Opts.savePlots)
+        fh = figure('Visible','off');
+    else
+        fh = figure();
+    end
     
     dimension = length(X(:,1));
     if (dimension == 2)
@@ -8,13 +15,19 @@ function [] = syntheticDataAnalyzer( X, Y, Opts)
     elseif (dimension == 3)
         scatter3(X(1,:),X(2,:),X(3,:));
     else
-        disp('cannot plot, >3 dimensions');
+        disp('cannot plot, >3 or <2 dimensions');
     end
-    pause(2);
+    
+    if(Opts.savePlots)
+        saveas(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/data'),'png');
+        close(fh);
+    else
+        pause(Opts.interval);
+    end
 
     %% plot the K-Means Clustering results
     
-    function plotAssignments(X, labelAssignments)
+    function plotAssignments(X, labelAssignments, plotName)
         
         n = length(labelAssignments);
         d = length(X(:,1));
@@ -28,6 +41,12 @@ function [] = syntheticDataAnalyzer( X, Y, Opts)
             colorMatrix(i,:) = color;
         end
         
+        if(Opts.savePlots)
+            fh = figure('Visible','off');
+        else
+            fh = figure();
+        end
+
         if (d == 2)
             scatter(X(1,:),X(2,:), 4, colorMatrix);
         elseif (d == 3)
@@ -35,16 +54,23 @@ function [] = syntheticDataAnalyzer( X, Y, Opts)
         else
             disp('cannot plot, >3 dimensions');
         end
+        
+        if(Opts.savePlots)
+            saveas(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/',plotName),'png');
+            close(fh);
+        else
+            pause(Opts.interval);
+        end
+   
     end
 
     kMeansLabelAssignments = kmeans(X', Opts.numberOfClusters);
-    plotAssignments(X, kMeansLabelAssignments);
-    pause(2);
+    plotAssignments(X, kMeansLabelAssignments, 'kmeans');
 
     %% plot the Spectral Clustering results
     
     [scLabelAssignments, ~] = SpectralClusterer(X, Y, struct('NumClusters', Opts.numberOfClusters, 'NumberNeighbors', Opts.numberOfNeighbors));
-    plotAssignments(X, scLabelAssignments.Merged);
-    pause(2);
+    plotAssignments(X, scLabelAssignments.Merged, 'spectral');
 
+    close all;
 end

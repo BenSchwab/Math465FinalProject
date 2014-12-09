@@ -29,21 +29,26 @@ end;
 % default settings
 Opts.numberOfClusters = 2;
 Opts.numberOfNeighbors = 70;
+Opts.savePlots = false;
+Opts.interval = 2; % 2 seconds between plot displays
 
+% update settings on a per case basis
 switch pExampleIdx
     case 1  
+        Opts.name = 'twoBalls';
         [X, Y] = twoBalls(1000,2,3);
-        syntheticDataAnalyzer(X, Y, Opts);
     case 2
+        Opts.name = 'doubleHelix';
         [X, Y] = doubleHelix(1000);
-        syntheticDataAnalyzer(X, Y, Opts);
     case 3
+        Opts.name = 'lineAndBlob';
         [X, Y] = lineAndBlob(1000, 1000);
-        syntheticDataAnalyzer(X, Y, Opts);
     case 4
+        Opts.name = 'denseAndSparseBlobs';
         [X, Y] = denseAndSparseBlobs(1000, 3);
-        syntheticDataAnalyzer(X, Y, Opts);
     case 5
+        Opts.name = 'blobInSphere';
         [X, Y] = blobInSphere(1000, 1000, 2);
-        syntheticDataAnalyzer(X, Y, Opts);
 end
+
+syntheticDataAnalyzer(X, Y, Opts);
