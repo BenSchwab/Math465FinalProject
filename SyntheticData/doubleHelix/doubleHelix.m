@@ -1,4 +1,4 @@
-function [ X, Y ] = doubleHelix(n)
+function [ X, Y ] = doubleHelix(n, Opts)
 
 t = rand(1,n)*n/100;
 
@@ -13,10 +13,12 @@ strandTwoZCoordinates = t;
 strandTwoLabels = ones(1,n);
 
 strandMu = 0;
-strandSigma = 0.1;
+if ~isfield(Opts,'strandSigma')
+    Opts.strandSigma = 0.1;
+end
 zCoordinates = horzcat(strandOneZCoordinates, strandTwoZCoordinates);
-xCoordinates = horzcat(strandOneXCoordinates, strandTwoXCoordinates) + normrnd(strandMu,strandSigma,1,n*2);
-yCoordinates = horzcat(strandOneYCoordinates, strandTwoYCoordinates) + normrnd(strandMu,strandSigma,1,n*2);
+xCoordinates = horzcat(strandOneXCoordinates, strandTwoXCoordinates) + normrnd(strandMu,Opts.strandSigma,1,n*2);
+yCoordinates = horzcat(strandOneYCoordinates, strandTwoYCoordinates) + normrnd(strandMu,Opts.strandSigma,1,n*2);
 
 X = vertcat(xCoordinates, yCoordinates, zCoordinates);
 Y = horzcat(strandOneLabels, strandTwoLabels);
