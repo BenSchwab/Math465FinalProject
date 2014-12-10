@@ -1,14 +1,14 @@
 % filename = .....#{num_data}_#{num cluster}_#{run id}
 
-data_points = [100, 200, 400, 600, 1000, 2000 ];
-knns =         [20, 30, 50, 50, 50, 50 ];
+data_points = [1000];%[100, 200, 400, 600, 1000 ];
+knns =         [50];%[20, 30, 50, 50, 50 ];
 
 num_data_runs = length(data_points);
 num_runs = 5;
-for r = 1:num_runs
+for r = 10:num_runs+10
     for i = 1:num_data_runs
         num_points = data_points(i);
-
+        tic
         sprintf('run: %d \t data_points: %d', r, num_points)
         knn = knns(i);
         %%%%
@@ -24,7 +24,7 @@ for r = 1:num_runs
             [X,Y] = MNIST_helper(digits, num_points,0); 
             [clusters, G] = SpectralClusterer(X, Y, struct('NumClusters', num_clusters, 'NumberNeighbors', knn, 'auto',0));
             purity_un = ClusterPurity(clusters.Unmerged, Y, num_clusters);
-            purity_merge = ClusterPurity(clusters.Unmerged, Y, num_clusters);
+            purity_merge = ClusterPurity(clusters.Merged, Y, 2);
 
             WriteData(filename, purity_un, purity_merge);
         end
@@ -41,7 +41,7 @@ for r = 1:num_runs
             filename = sprintf('one_seven_%d_%d_%d', num_points, num_clusters, r);    
             [clusters, G] = SpectralClusterer(X, Y, struct('NumClusters', num_clusters, 'NumberNeighbors', knn, 'auto',0));
             purity_un = ClusterPurity(clusters.Unmerged, Y, num_clusters);
-            purity_merge = ClusterPurity(clusters.Unmerged, Y, num_clusters);
+            purity_merge = ClusterPurity(clusters.Merged, Y, 2);
 
             WriteData(filename, purity_un, purity_merge);
         end
@@ -59,7 +59,7 @@ for r = 1:num_runs
 
             [clusters, G] = SpectralClusterer(X, Y, struct('NumClusters', num_clusters, 'NumberNeighbors', knn, 'auto',0));
             purity_un = ClusterPurity(clusters.Unmerged, Y, num_clusters);
-            purity_merge = ClusterPurity(clusters.Unmerged, Y, num_clusters);
+            purity_merge = ClusterPurity(clusters.Merged, Y, 4);
 
             WriteData(filename, purity_un, purity_merge);
         end
@@ -77,10 +77,11 @@ for r = 1:num_runs
 
             [clusters, G] = SpectralClusterer(X, Y, struct('NumClusters', num_clusters, 'NumberNeighbors', knn, 'auto',0));
             purity_un = ClusterPurity(clusters.Unmerged, Y, num_clusters);
-            purity_merge = ClusterPurity(clusters.Unmerged, Y, num_clusters);
+            purity_merge = ClusterPurity(clusters.Merged, Y, 10);
 
 
             WriteData(filename, purity_un, purity_merge);
         end
+        toc
     end
 end
