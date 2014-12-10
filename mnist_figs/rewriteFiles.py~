@@ -1,0 +1,14 @@
+#!/usr/bin/python
+import os
+path = os.getcwd()
+for filename in os.listdir(path):
+    original = open(filename)
+    outfileMerge = open(filename+'_merged','w')
+    outfileUnmerge = open(filename+'_unmerged','w')
+    Unmerged = True
+    for line in original:
+        if line[:5]=='merged':
+            print line
+    outfileMerge.close()
+    outfileUnmerge.close()
+    original.close()
