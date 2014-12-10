@@ -68,3 +68,5 @@ plot(noiseVector, all_digits_averagePurities, 'black');
 legend('[0,1]','[1,7]', '[0,1,3,6]','[0-9]', 'Location','southwest')
 title(sprintf('clustery purity as a function of noise - nData=%d',numberOfPoints))
 ylim([0,1])
+fh = figure();
+print(fh,strcat(pwd,'/MNISTData/','Noise','/','tyler'),'-dsvg');
