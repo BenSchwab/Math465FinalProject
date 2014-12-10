@@ -41,15 +41,15 @@ end
 
 queryDigits = [9]; % set digit
 numberOfPoints = 1;
-noiseIter = 10;
-noiseVector = [(0:noiseIter)*10,150];
+noiseIter = 6;
+noiseVector = [0,10,20,40,80,160];
 imgOpts.imR = 28;
 imgOpts.imC = 28;
 counter = 1;
-for j = 1:(noiseIter+2)
+for j = 1:(noiseIter)
     rng(1234); % set seed to get the same image repeatedly
     [X,Y] = MNIST_helper(queryDigits, numberOfPoints, noiseVector(j));
-    plotPosition = subplot(1,noiseIter+2,counter);
+    plotPosition = subplot(1,noiseIter,counter);
     imagesc(reshape(X(:,1),[imgOpts.imR,imgOpts.imC]));
     colormap(gray);
     xlabel(strcat('NoiseParam: ',num2str(noiseVector(j))));
