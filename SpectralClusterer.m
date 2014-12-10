@@ -1,9 +1,13 @@
 function [ Clusters, G] = SpectralClusterer(X,Y,Opts)
-%X is the DxN input data. Y is a N element array of the true labels.
+%%X is the DxN input data. Y is a N element array of the true labels.
 %Opts is an array of optional options as follows:
+%auto: boolean representing whether to use AutoTuneLaplacianBuilder to make
+%      Laplacian graph. If not present, false.
 %
-%
+%LaplacianType: 
+%%
 
+%Read the options
 auto = 0;
 if isfield(Opts, 'auto')
     auto = getfield(Opts, 'auto');
