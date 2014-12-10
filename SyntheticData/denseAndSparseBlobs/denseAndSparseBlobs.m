@@ -1,7 +1,7 @@
 function [X, Y] = denseAndSparseBlobs(n, dim)
 
     sigmaOne = 0.2;
-    ballOne = normrnd(0, sigmaOne, dim, 1000);
+    blobOne = normrnd(0, sigmaOne, dim, n);
 
     distance = 1; %distance between centers of the two clusters with high 
     % variance on large cluster 
@@ -12,14 +12,14 @@ function [X, Y] = denseAndSparseBlobs(n, dim)
     
     twoCenter = zeros([dim, 1]);
     twoCenter(1) = distance;
-    ballTwo = normrnd(0, sigmaTwo, dim, 1000);
-    for i = 1:1000
-        ballTwo(:,i) = ballTwo(:,i) + twoCenter;
+    blobTwo = normrnd(0, sigmaTwo, dim, n);
+    for i = 1:n
+        blobTwo(:,i) = blobTwo(:,i) + twoCenter;
     end
 
-    X = horzcat(ballOne, ballTwo);
-    ballOneLabels = ones([1, n]);
-    ballTwoLabels = zeros([1, n]);
-    Y = horzcat(ballOneLabels, ballTwoLabels);
+    X = horzcat(blobOne, blobTwo);
+    blobOneLabels = ones([1, n]);
+    blobTwoLabels = zeros([1, n]);
+    Y = horzcat(blobOneLabels, blobTwoLabels);
 
 end

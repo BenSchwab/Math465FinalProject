@@ -7,7 +7,8 @@ pExampleNames   = { ...
     'blobInSphere   Kmeans[X] Spectral[O]', ...
     'twoBalls       Varying Dimension', ...
     'blobInSphere   Varying Variance', ...
-    'doubleHelix    Varying Variance'};
+    'doubleHelix    Varying Variance',...
+    'sparseBlobs    Kmeans[X] Spectral[X]'};
 
 fprintf('\n\n Select example to run:\n');
 for k = 1:length(pExampleNames),
@@ -121,4 +122,13 @@ switch pExampleIdx
 
             counter = counter+1;
         end
+        
+    case 9
+        Opts.savePlots = false;
+        Opts.name = 'sparseBlobs';
+        Opts.numberOfNeighbors = 20;
+        sparseBlobsOpts = struct();
+        [X, Y] = sparseBlobs(3,50,sparseBlobsOpts);
+        syntheticDataAnalyzer(X, Y, Opts);
+        
 end
