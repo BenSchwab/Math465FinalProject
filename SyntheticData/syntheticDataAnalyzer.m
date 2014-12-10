@@ -17,10 +17,11 @@ function [] = syntheticDataAnalyzer( X, Y, Opts)
     end
     
     if(Opts.savePlots)
-        saveas(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/data'),'png');
+        %saveas(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/data'),'png');
+        print(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/data'),'-dsvg');
         close(fh);
     else
-        pause(Opts.interval);
+        pause; %pause(Opts.interval);
     end
 
     %% plot assignments for any clustering algorithm
@@ -54,10 +55,11 @@ function [] = syntheticDataAnalyzer( X, Y, Opts)
         end
         
         if(Opts.savePlots)
-            saveas(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/',plotName),'png');
+            %saveas(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/',plotName),'png');
+            print(fh,strcat(pwd,'/SyntheticData/',Opts.name,'/',plotName),'-dsvg');
             close(fh);
         else
-            pause(Opts.interval);
+            pause; %pause(Opts.interval);
         end
    
     end
