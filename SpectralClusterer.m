@@ -22,6 +22,7 @@ end
 
 
 
+
 %Preform the spectral projection
 if strcmp(laplacianType,'shi-normalized')
      [EigenVec,EigenVal] = eig(G.LRW); 
@@ -94,6 +95,8 @@ end
 Clusters.Merged = newClusters;
 Clusters.Unmerged = clusters;
 Clusters.Sets = clusterSets;
+Clusters.G = G;
+Clusters.U = U;
 %Clusters.ClusterSets = clusterSet
 
 end
