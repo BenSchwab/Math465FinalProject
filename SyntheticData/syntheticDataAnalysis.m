@@ -97,9 +97,17 @@ switch pExampleIdx
                 plotPosition = subplot(length(blobSigmas),length(sphereSigmas),counter);
                 colormap(cool);
                 scatter(plotPosition, X(1,:),X(2,:), 4, spectralLabelAssignments.Merged);
-                title(strcat('blobSigma: ',num2str(blobSigma),', sphereSigma: ',num2str(sphereSigma)));
+                % title(strcat('\sigma_{blob} = ',num2str(blobSigma),', \sigma_{sphere} = ',num2str(sphereSigma)));
                 
-                counter = counter+1;
+                if (counter == 1 || counter == 4 || counter == 7)
+                    ylabel(strcat('\sigma_{blob} = ',num2str(blobSigma)));
+                end
+                
+                if (counter == 7 || counter == 8 || counter == 9)
+                    xlabel(strcat('\sigma_{sphere} = ',num2str(sphereSigma)));
+                end
+                
+                counter = counter + 1;
             end
         end
        
