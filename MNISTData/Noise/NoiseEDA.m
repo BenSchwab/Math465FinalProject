@@ -37,15 +37,35 @@ for j = 1:(noiseIter+1)
     counter = counter + 1;
 end
 
+%% And the same digit X, with varying noise?
+
+queryDigits = [9]; % set digit
+numberOfPoints = 1;
+noiseIter = 10;
+noiseVector = [(0:noiseIter)*10,150];
+imgOpts.imR = 28;
+imgOpts.imC = 28;
+counter = 1;
+for j = 1:(noiseIter+2)
+    rng(1234); % set seed to get the same image repeatedly
+    [X,Y] = MNIST_helper(queryDigits, numberOfPoints, noiseVector(j));
+    plotPosition = subplot(1,noiseIter+2,counter);
+    imagesc(reshape(X(:,1),[imgOpts.imR,imgOpts.imC]));
+    colormap(gray);
+    xlabel(strcat('NoiseParam: ',num2str(noiseVector(j))));
+    pause(0.25);
+    counter = counter + 1;
+end
+
 %% Discover range for noiseParam in GenerateDataSets (specifically for MNIST dataset)
 
-numberOfClusters = 2;
+numberOfClusters = 3;
 queryDigits = [0,1];
 numberOfPoints = 300;
 
-numTrials = 10;
+numTrials = 15;
 averagePurities = zeros(1,numTrials);
-noiseVector = 2.^(0:numTrials); %(0:20:2000);
+noiseVector = 0:20:300; %2.^(0:numTrials); %(0:20:2000);
 
 % explore the noiseParam space:
 % 2.^(1:numTrials); 

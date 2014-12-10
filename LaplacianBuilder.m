@@ -36,7 +36,7 @@ for i = 1:n
     neighbor_distances = dists{i};
     for j = 1:Opts.NumberNeighbors
         neighbor = neighbors(j);
-        W(i, neighbor) = 1/(1 + neighbor_distances(j));
+        W(i, neighbor) = 1/(1 + neighbor_distances(j)); % TODO scale
         W(neighbor, i) = 1/(1 + neighbor_distances(j));
     end
 end
