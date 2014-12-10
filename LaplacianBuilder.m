@@ -31,13 +31,14 @@ n = size(X,2);
 
 W = zeros(n,n);
 D = zeros(n,n);
+sigma = mean(std(X'));
 for i = 1:n
     neighbors = idxs{i};
     neighbor_distances = dists{i};
     for j = 1:Opts.NumberNeighbors
         neighbor = neighbors(j);
-        W(i, neighbor) = 1/(1 + neighbor_distances(j));
-        W(neighbor, i) = 1/(1 + neighbor_distances(j));
+        W(i, neighbor) = 1/(sigma + neighbor_distances(j));
+        W(neighbor, i) = 1/(sigma + neighbor_distances(j));
     end
 end
 
