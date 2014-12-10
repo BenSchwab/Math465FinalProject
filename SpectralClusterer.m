@@ -22,6 +22,7 @@ end
 
 
 
+
 %Preform the spectral projection
 if strcmp(laplacianType,'shi-normalized')
      [EigenVec,EigenVal] = eig(G.LRW); 
@@ -40,16 +41,10 @@ else
 end
 
 
-
-
-
-
 %Compute the clusters on the projection with K-means
 clusters = kmeans(U, Opts.NumClusters);
 
 
-
-%TODO: make this step optional
 
 %Combine the clusters if predominant label is the same
 merged = zeros(Opts.NumClusters);
@@ -87,12 +82,21 @@ end
 
 
 %Group the data into clusters
-clusterSet = cell(0);
+numClustersCollapsed = nextClusterNum -1;
+clusterSets = cell(1,numClustersCollapsed);
+
+for i = 1:length(newClusters)
+    clusterSet =  clusterSets{1,newClusters(i)};
+    clusterSets{1,newClusters(i)} = [clusterSet X(:,i)];
+end
 
 
 
 Clusters.Merged = newClusters;
 Clusters.Unmerged = clusters;
+Clusters.Sets = clusterSets;
+Clusters.G = G;
+Clusters.U = U;
 %Clusters.ClusterSets = clusterSet
 
 end
