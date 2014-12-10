@@ -3,8 +3,8 @@
 %% Generally, what does noisy image data look like?
 
 queryDigits = [0,1,3,6];
-numberOfPoints = 100;
-knn = 30;
+numberOfPoints = 200;
+knn = 40;
 
 noiseIter = 15;
 %noiseVector = (0:noiseIter)*10;
@@ -22,6 +22,7 @@ one_seven_averagePurities = zeros(1,noiseIter+1);
 zero_six_averagePurities = zeros(1,noiseIter+1);
 all_digits_averagePurities = zeros(1,noiseIter+1);
 for i=1:(noiseIter+1)
+    sprintf('%d...\n', i)
     %%
     % 0 1
     %%
@@ -59,7 +60,7 @@ for i=1:(noiseIter+1)
     averagePurity = sum(purityMatrix(:,1).*purityMatrix(:,3))/sum(purityMatrix(:,3));
     all_digits_averagePurities(1,i) = averagePurity; 
 end
-
+fh = figure;
 plot(noiseVector, zero_one_averagePurities, 'r');
 hold on;
 plot(noiseVector, one_seven_averagePurities, 'b');
@@ -70,5 +71,4 @@ plot(noiseVector, all_digits_averagePurities, 'black');
 legend('[0,1]','[1,7]', '[0,1,3,6]','[0-9]', 'Location','southwest')
 title(sprintf('clustery purity as a function of noise - nData=%d',numberOfPoints))
 ylim([0,1])
-fh = figure();
-print(fh,strcat(pwd,'/MNISTData/','Noise','/',sprintf('noise_graph_n_',numberOfPoints)),'-dsvg');
+print(fh,strcat(pwd,'/MNISTData/','Noise','/',sprintf('noise_graph_n_%d',numberOfPoints)),'-dsvg');
