@@ -2,7 +2,7 @@ function [ purity ] = ClusterPurity(clusters, trueLabels, numClusters)
 %CLUSTERPURITY Summary of this function goes here
 %   Detailed explanation goes here
 
-purity = zeros(numClusters,2);
+purity = zeros(numClusters,3);
 clusterKeys = unique(trueLabels);
 for cluster = 1:numClusters
     clusterMap = containers.Map(clusterKeys, zeros(length(clusterKeys),1));
@@ -31,6 +31,7 @@ for cluster = 1:numClusters
    end
    purity(cluster, 1) = maxVal/sum(vals);
    purity(cluster, 2) = maxKey;
+   purity(cluster, 3) = sum(vals);
 end
 
 
