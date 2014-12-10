@@ -5,10 +5,9 @@ knns =         [20, 30, 50, 50, 50, 50 ];
 
 num_data_runs = length(data_points);
 num_runs = 5;
-for r = 1:num_runs
+for r = 6:num_runs+5
     for i = 1:num_data_runs
         num_points = data_points(i);
-
         sprintf('run: %d \t data_points: %d', r, num_points)
         knn = knns(i);
         %%%%
