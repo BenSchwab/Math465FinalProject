@@ -1,4 +1,4 @@
-function [ G,UserOpts ] = LaplacianBuilder( X, UserOpts)
+function [ G ] = LaplacianBuilderTwo( X, UserOpts)
 %LAPLACIANBUILDER This function builds the Laplacian graph for the input
 %DxN matrix.
 
@@ -10,7 +10,7 @@ Opts.NumClusters = 2;
 %By default do not combine the clusters
 Opts.CombineClusters = 0;
 
-
+tic
 
 %Populate User options
 if nargin>1
@@ -29,59 +29,44 @@ end
 d = size(X,1);
 n = size(X,2);
 
-%============Nearest Neighbor Search ========================
+toc
 
-tic %time nearest neighbor search
-[count,idxs, dists,NNInfo] = nrsearch(X, X, Opts.NumberNeighbors, 0);
-UserOpts.times(1) = toc
+%[count,idxs, dists,NNInfo] = nrsearch(X, X, Opts.NumberNeighbors, 0);
+neighborArr = knnsearch(X',X','K',Opts.NumberNeighbors);
 toc
 W = zeros(n,n);
 D = zeros(n,n);
 sigma = mean(std(X'));
-
-%============Build Laplacian Info========================
-
-tic %time constructing laplacian
 for i = 1:n
-    neighbors = idxs{i};
-    neighbor_distances = dists{i};
+    neighbors = neighborArr(i,:);
+    %neighbor_distances = dists{i};
     for j = 1:Opts.NumberNeighbors
         neighbor = neighbors(j);
-        W(i, neighbor) = 1/(sigma + neighbor_distances(j));
-        W(neighbor, i) = 1/(sigma + neighbor_distances(j));
+        distance = norm(X(:,i)-(X(:,neighbor)));
+        W(i, neighbor) = 1/(sigma + distance);
+        W(neighbor, i) = 1/(sigma + distance);
     end
 end
-
-toc
-
 
 for i = 1:n
     D(i,i) = sum(W(i,:)); 
 end
 L = D - W;
-LS = sparse(L);
-DS = sparse(D);
-DSinv = DS^-1;
-DShalf = sqrt(DS)^-1;
+toc
 
 
-%LNormalized = D^(-1/2)*L*D^(-1/2);
-LNormalized = DShalf*LS*DShalf;
-
-
+LNormalized = D^(-1/2)*L*D^(-1/2);
 
 G.W = W;
 G.D = D;
 G.L = L;
-%G.LRW = D^(-1)*L;
-G.LRW = DSinv*LS;
-%G.LNormalized = LNormalized;
+G.LRW = D^(-1)*L;
 G.LNormalized = LNormalized;
-
-UserOpts.times(2) = toc;
-toc
 
 
 
 end
+
+
+
 

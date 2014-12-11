@@ -1,4 +1,4 @@
-function [ Clusters, G] = SpectralClusterer(X,Y,Opts)
+function [ Clusters, G,Times] = SpectralClusterer(X,Y,Opts)
 %%X is the DxN input data. Y is a N element array of the true labels.
 %Opts is an array of optional options as follows:
 %auto: boolean representing whether to use AutoTuneLaplacianBuilder to make
@@ -7,7 +7,10 @@ function [ Clusters, G] = SpectralClusterer(X,Y,Opts)
 %LaplacianType: 
 %%
 
-%Read the options
+%=========================== Read the options =======================%
+times = zeros(5,1);
+Opts.times = times;
+
 auto = 0;
 if isfield(Opts, 'auto')
     auto = getfield(Opts, 'auto');
@@ -15,7 +18,7 @@ end
 if auto
     G = AutoTuneLaplacianBuilder(X,Opts);
 else
-    G = LaplacianBuilder(X,Opts);
+    [G,Opts] = LaplacianBuilder(X,Opts);
 end
 Clusters = {};
 
@@ -26,31 +29,45 @@ end
 
 
 
-
-%Preform the spectral projection
+%===================  Preform the spectral projection ====================%
+tic
 if strcmp(laplacianType,'shi-normalized')
-     [EigenVec,EigenVal] = eig(G.LRW); 
+     %[EigenVec,EigenVal] = eig(G.LRW);
+     %Use eigs for speed increase
+     [EigenVec,EigenVal] = eigs(G.LRW,Opts.NumClusters,'sm');
+     EigenVec = fliplr(EigenVec);
+     EigenVal = fliplr(EigenVal);
      U = EigenVec(:,1:Opts.NumClusters);
      
 elseif strcmp(laplacianType,'ng-normalized')
-     [EigenVec,EigenVal] = eig(G.LNormalized); 
+     %Use eigs for speed increase
+     %[EigenVec,EigenVal] = eig(G.LNormalized);
+     [EigenVec,EigenVal] = eigs(G.LNormalized,Opts.NumClusters,'sm');
+     EigenVec = fliplr(EigenVec);
+     EigenVal = fliplr(EigenVal);
      T = EigenVec(:,1:Opts.NumClusters);
      for row = 1:length(T(:,1))
         T(row,:) = T(row,:)/norm(T(row,:));
      end
      U = T;
 else 
-    [EigenVec,EigenVal] = eig(G.L); 
+    %[EigenVec,EigenVal] = eig(G.L); 
+     [EigenVec,EigenVal] = eigs(G.L,Opts.NumClusters,'sm');
+     EigenVec = fliplr(EigenVec);
+     EigenVal = fliplr(EigenVal);
      U = EigenVec(:,1:Opts.NumClusters);
 end
 
+Opts.times(3) = toc;
 
-%Compute the clusters on the projection with K-means
+%===========Compute the clusters on the projection with K-means=========%
+tic
 clusters = kmeans(U, Opts.NumClusters);
+Opts.times(4) = toc;
 
 
-
-%Combine the clusters if predominant label is the same
+%===========Combine the clusters if predominant label is the same=======%
+tic
 merged = zeros(Opts.NumClusters);
 newClusters = zeros(length(clusters),1);
 clusterPurities = ClusterPurity(clusters,Y, Opts.NumClusters);
@@ -94,6 +111,8 @@ for i = 1:length(newClusters)
     clusterSets{1,newClusters(i)} = [clusterSet X(:,i)];
 end
 
+Opts.times(5) = toc;
+
 
 
 Clusters.Merged = newClusters;
@@ -101,6 +120,7 @@ Clusters.Unmerged = clusters;
 Clusters.Sets = clusterSets;
 Clusters.G = G;
 Clusters.U = U;
+Times = Opts.times;
 %Clusters.ClusterSets = clusterSet
 
 end
