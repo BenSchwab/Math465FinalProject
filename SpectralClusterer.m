@@ -1,10 +1,15 @@
 function [ Clusters, G,Times] = SpectralClusterer(X,Y,Opts)
 %%X is the DxN input data. Y is a N element array of the true labels.
 %Opts is an array of optional options as follows:
-%auto: boolean representing whether to use AutoTuneLaplacianBuilder to make
-%      Laplacian graph. If not present, false.
-%
-%LaplacianType: 
+%       auto: boolean representing whether to use AutoTuneLaplacianBuilder to make
+%            Laplacian graph. If not present, false.
+%       LaplacianType: Specifies how to find eigenvalues of Laplacian:
+%                      values: 'unnormalized', 'ng-normalized',
+%                      'shi-normalized'
+%       NumberNeighbors = number of neighbors to use for KNN
+%       NumClusters =  number of clusters to segment data
+%       NSDistance = distance metric. See knnsearch 'Distance' for options.
+%                    defaults to 'Eucledian'   
 %%
 
 %=========================== Read the options =======================%
@@ -43,8 +48,6 @@ elseif strcmp(laplacianType,'ng-normalized')
      %Use eigs for speed increase
      %[EigenVec,EigenVal] = eig(G.LNormalized);
      [EigenVec,EigenVal] = eigs(G.LNormalized,Opts.NumClusters,'sm');
-     EigenVec = fliplr(EigenVec);
-     EigenVal = fliplr(EigenVal);
      T = EigenVec(:,1:Opts.NumClusters);
      for row = 1:length(T(:,1))
         T(row,:) = T(row,:)/norm(T(row,:));
@@ -53,8 +56,8 @@ elseif strcmp(laplacianType,'ng-normalized')
 else 
     %[EigenVec,EigenVal] = eig(G.L); 
      [EigenVec,EigenVal] = eigs(G.L,Opts.NumClusters,'sm');
-     EigenVec = fliplr(EigenVec);
-     EigenVal = fliplr(EigenVal);
+     %EigenVec = fliplr(EigenVec).*-1;
+     %EigenVal = fliplr(EigenVal).*-1;
      U = EigenVec(:,1:Opts.NumClusters);
 end
 
