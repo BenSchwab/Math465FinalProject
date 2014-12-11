@@ -8,7 +8,8 @@ pExampleNames   = { ...
     'twoBalls       Varying Dimension', ...
     'blobInSphere   Varying Variance', ...
     'doubleHelix    Varying Variance',...
-    'sparseBlobs    Kmeans[X] Spectral[X]'};
+    'sparseBlobs    Kmeans[X] Spectral[X]', ...
+    'blobInSphere   Varying Dimension'};
 
 fprintf('\n\n Select example to run:\n');
 for k = 1:length(pExampleNames),
@@ -132,6 +133,7 @@ switch pExampleIdx
         end
         
     case 9
+        % example where kmeans outperforms spectral in a low n setting.
         Opts.savePlots = false;
         Opts.name = 'sparseBlobs';
         Opts.numberOfNeighbors = 20;
@@ -139,4 +141,35 @@ switch pExampleIdx
         [X, Y] = sparseBlobs(3,50,sparseBlobsOpts);
         syntheticDataAnalyzer(X, Y, Opts);
         
+    case 10
+        % example where spectral starts performing better with high n,
+        % in a high variance setting
+        Opts.name = 'sparseBlobs';
+        Opts.savePlots = false;
+        
+        nStart = 10;
+        nEnd = 12;
+        nVary = 2.^(nStart:nEnd);
+        counter = 1;
+        
+        blobSigma = 0.75;
+        sphereSigma = 0.02; 
+        
+        Opts.numberOfNeighbors = 10;
+        
+        for i=1:length(nVary)
+            n = nVary(i);
+            blobInSphereOpts = struct('blobSigma',blobSigma,'sphereSigma',sphereSigma);
+            [X, Y] = blobInSphere(n, n, 2, blobInSphereOpts);
+            [spectralLabelAssignments, ~] = SpectralClusterer(X, Y, struct('NumClusters', Opts.numberOfClusters, 'NumberNeighbors', Opts.numberOfNeighbors));
+            
+            plotPosition = subplot(1,(nEnd - nStart + 1),counter);
+            colormap(cool);
+            
+            scatter(plotPosition, X(1,:),X(2,:), 4, spectralLabelAssignments.Merged);
+            title(strcat('numPoints: ',num2str(n)));
+
+            counter = counter+1;
+            disp(strcat('done with n = ',num2str(n)));
+        end
 end
