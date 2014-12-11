@@ -2,7 +2,9 @@ function [ output_args ] = DDDPlotter(U, labelAssignments, plotName)
         
         n = length(labelAssignments);
 
-        X3 = U(1:3,:);
+        X31 = U(:,1:3);
+        X32 = U(:,4:6);
+        X33 = U(:,7:9);
         
         numberOfColors = length(unique(labelAssignments));
         colors = distinguishable_colors(numberOfColors);
@@ -14,7 +16,17 @@ function [ output_args ] = DDDPlotter(U, labelAssignments, plotName)
         end
         
         fh = figure();
-        scatter3(U(:,1),U(:,2),U(:,3), 4, colorMatrix);
+        scatter3(X31(:,1),X31(:,2),X31(:,3), 4, colorMatrix);
+        caxis([0,9]);
+        colorbar;
+        
+        fh = figure();
+        scatter3(X32(:,1),X32(:,2),X32(:,3), 4, colorMatrix);
+        caxis([0,9]);
+        colorbar;
+        
+        fh = figure();
+        scatter3(X33(:,1),X33(:,2),X33(:,3), 4, colorMatrix);
         caxis([0,9]);
         colorbar;
 end
