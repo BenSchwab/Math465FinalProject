@@ -11,7 +11,7 @@ function [ G,UserOpts ] = LaplacianBuilder( X, UserOpts)
 Opts = {};
 Opts.NumberNeighbors = 5;
 Opts.NumClusters = 2;
-Opts.NSDistnace = 'euclidean';
+Opts.NSDistance = 'euclidean';
 
 
 %Populate User options
@@ -22,7 +22,7 @@ if nargin>1
         value = getfield(UserOpts, name);
 
         if     strcmpi(name,'NumberNeighbors')   Opts.NumberNeighbors = value;
-        elseif     strcmpi(name,'NSDistnace')   Opts.NSDistnace = value;
+        elseif     strcmpi(name,'NSDistnace')   Opts.NSDistance = value;
         elseif strcmpi(name,'NumClusters')       Opts.NumClusters = value;
        
         end
